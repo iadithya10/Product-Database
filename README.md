@@ -9,7 +9,7 @@ Express server setup
 
 MySQL database connection
 
-Products table with UUID as primary key
+Products table 
 
 REST APIs:
 
