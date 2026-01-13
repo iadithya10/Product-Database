@@ -3,7 +3,7 @@
 This project is a simple CRUD REST API for managing products using Node.js, Express, and MySQL.
 It demonstrates server setup, database connection, table creation, and API implementation using best practices.
 
-🚀 Features
+🚀 Features:
 
 Express server setup
 
