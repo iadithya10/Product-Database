@@ -25,17 +25,42 @@ exports.createProduct = (req, res) => {
 
 
 exports.getProducts = (req, res) => {
-  const sql = "SELECT * FROM products";
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
 
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error(err);
+  //  total count
+  const countSql = "SELECT COUNT(*) AS total FROM products";
+
+  db.query(countSql, (countErr, countResult) => {
+    if (countErr) {
+      console.error(countErr);
       return res.status(500).json({ message: "Database error" });
     }
 
-    res.status(200).json(results);
+    const totalRecords = countResult[0].total;
+    const totalPages = Math.ceil(totalRecords / limit);
+
+    // Get paginated data
+    const dataSql = "SELECT * FROM products LIMIT ? OFFSET ?";
+
+    db.query(dataSql, [limit, offset], (dataErr, results) => {
+      if (dataErr) {
+        console.error(dataErr);
+        return res.status(500).json({ message: "Database error" });
+      }
+
+      res.status(200).json({
+        page,
+        limit,
+        totalRecords,
+        totalPages,
+        data: results
+      });
+    });
   });
 };
+
 
 exports.updateProduct = (req, res) => {
   const { id } = req.params;
@@ -63,7 +88,6 @@ exports.updateProduct = (req, res) => {
     });
   });
 };
-
 
 exports.deleteProduct = (req, res) => {
   const { id } = req.params;
