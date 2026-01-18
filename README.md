@@ -19,6 +19,6 @@ Get all products (GET)
 
 Update product (PUT)
 
-Delete product (DELETE)
+Delete product (DELETE).
 
 Pagination implemented in the Get Products API using page and limit query parameters to efficiently handle large datasets
